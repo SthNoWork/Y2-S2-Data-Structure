@@ -34,6 +34,7 @@
     --dr-pink: #ff79c6;
     --dr-purple:#bd93f9;
     --dr-red:  #ff5555;
+    --pdf-content-width: 900px;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
@@ -70,8 +71,8 @@
   }
   body.exporting-pdf .main {
     background: #0d1117 !important;
-    max-width: 900px !important;
-    width: 900px !important;
+    max-width: var(--pdf-content-width) !important;
+    width: var(--pdf-content-width) !important;
     margin: 0 !important;
     padding: 20px 0 !important;
   }
@@ -306,9 +307,27 @@
 
 <script>
 /* ══════════ CONFIG ══════════ */
-// Change this string to set the subtitle shown after the lab name in the header.
-// It will appear as: "Lab1 · <LAB_SUBTITLE>"
-const LAB_SUBTITLE = "Data Structures";
+const VIEWER_CONFIG = {
+  subtitle: 'Data Structures',
+  debug: false,
+  pdf: {
+    contentWidthPx: 900,
+    viewportWidthPx: 960,
+    captureScale: 2,
+    pageWidthMm: 210,
+    imageQuality: 0.95
+  },
+  outputFileCandidates: ['output.txt', 'output.log', 'stdout.txt', 'result.txt'],
+  outputLabel: 'OUTPUT',
+  skipCodeFileExtensions: [
+    'ilk', 'pdb', 'obj', 'exe', 'dll', 'so', 'dylib', 'class', 'jar', 'zip', '7z',
+    'png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'ico', 'svg', 'pdf',
+    'mp3', 'wav', 'ogg', 'mp4', 'mov', 'avi'
+  ],
+  preferredMainFileBases: ['main', 'app', 'program', 'index']
+};
+
+const LAB_SUBTITLE = VIEWER_CONFIG.subtitle;
 
 /* ══════════ STATE ══════════ */
 let folderData = [];
@@ -991,7 +1010,7 @@ function populateBody(body, ex) {
       <div class="out-header">
         <div class="out-dot"></div>
         <span class="fname">output.txt</span>
-        <span class="out-label">OUTPUT</span>
+        <span class="out-label">${VIEWER_CONFIG.outputLabel}</span>
       </div>
       <pre class="output-text">Loading output...</pre>
     `;
@@ -1050,19 +1069,21 @@ async function fetchExerciseOutputText(ex) {
     return ex.outputTextCache;
   }
 
-  const path = `${selectedCategory}/${selectedLab}/${ex.name}/output.txt`;
-  try {
-    const res = await fetch(path, { cache: 'no-store' });
-    if (!res.ok) {
-      ex.outputTextCache = null;
-      return null;
+  const baseDir = `${selectedCategory}/${selectedLab}/${ex.name}/`;
+  for (const fileName of VIEWER_CONFIG.outputFileCandidates) {
+    const path = `${baseDir}${encodeURIComponent(fileName)}`;
+    try {
+      const res = await fetch(path, { cache: 'no-store' });
+      if (!res.ok) continue;
+      ex.outputTextCache = await res.text();
+      return ex.outputTextCache;
+    } catch (_) {
+      // Try the next candidate.
     }
-    ex.outputTextCache = await res.text();
-    return ex.outputTextCache;
-  } catch (_) {
-    ex.outputTextCache = null;
-    return null;
   }
+
+  ex.outputTextCache = null;
+  return null;
 }
 
 async function hydrateExerciseFiles(ex) {
@@ -1084,28 +1105,33 @@ async function hydrateExerciseFiles(ex) {
       return;
     }
 
-    const discovered = [];
-    for (const name of fileNames) {
-      // output.txt is rendered in the output section, not as code section.
-      if (/^output\.txt$/i.test(name)) continue;
-      // User requested excluding .txt from code sections.
-      if (/\.txt$/i.test(name)) continue;
+    const candidates = fileNames.filter(name => {
+      if (isOutputArtifact(name)) return false;
+      if (isLikelyBinaryName(name)) return false;
+      return true;
+    });
 
-      const fileRes = await fetch(`${dirPath}${encodeURIComponent(name)}`, { cache: 'no-store' });
-      if (!fileRes.ok) continue;
+    const discoveredEntries = await Promise.all(candidates.map(async name => {
+      try {
+        const fileRes = await fetch(`${dirPath}${encodeURIComponent(name)}`, { cache: 'no-store' });
+        if (!fileRes.ok) return null;
 
-      const content = await fileRes.text();
-      // Skip likely binary files.
-      if (content.includes('\u0000')) continue;
+        const content = await fileRes.text();
+        if (content.includes('\u0000')) return null;
 
-      const ext = ((name.split('.').pop() || '').toLowerCase());
-      discovered.push({
-        name,
-        ext,
-        main: /^main\./i.test(name),
-        content
-      });
-    }
+        const ext = normalizeExtension(name);
+        return {
+          name,
+          ext,
+          main: isPrimarySourceFileName(name),
+          content
+        };
+      } catch (_) {
+        return null;
+      }
+    }));
+
+    const discovered = discoveredEntries.filter(Boolean);
 
     discovered.sort((a, b) => (b.main ? 1 : 0) - (a.main ? 1 : 0) || a.name.localeCompare(b.name));
     if (discovered.length) {
@@ -1146,6 +1172,27 @@ function parseDirectoryListingFileNames(html) {
   return out;
 }
 
+function normalizeExtension(fileName) {
+  const idx = fileName.lastIndexOf('.');
+  if (idx < 0 || idx === fileName.length - 1) return '';
+  return fileName.slice(idx + 1).toLowerCase();
+}
+
+function isOutputArtifact(fileName) {
+  return VIEWER_CONFIG.outputFileCandidates.some(n => n.toLowerCase() === fileName.toLowerCase());
+}
+
+function isLikelyBinaryName(fileName) {
+  const ext = normalizeExtension(fileName);
+  return VIEWER_CONFIG.skipCodeFileExtensions.includes(ext);
+}
+
+function isPrimarySourceFileName(fileName) {
+  const dotIndex = fileName.indexOf('.');
+  const base = (dotIndex > -1 ? fileName.slice(0, dotIndex) : fileName).toLowerCase();
+  return VIEWER_CONFIG.preferredMainFileBases.includes(base);
+}
+
 async function exportPdf() {
   const items = Array.from(document.querySelectorAll('#ex-list .ex-item'));
   const pending = [];
@@ -1183,22 +1230,22 @@ async function exportPdf() {
     const captureH = labView.scrollHeight;
 
     const canvas = await window.html2canvas(labView, {
-      scale: 2,
+      scale: VIEWER_CONFIG.pdf.captureScale,
       backgroundColor: '#0d1117',
       useCORS: true,
       logging: false,
       width: captureW,
       height: captureH,
-      windowWidth: 960,   // slightly wider than .main so nothing clips
+      windowWidth: VIEWER_CONFIG.pdf.viewportWidthPx,
       windowHeight: captureH
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    const imgData = canvas.toDataURL('image/jpeg', VIEWER_CONFIG.pdf.imageQuality);
     const { jsPDF } = window.jspdf;
 
     // A4 portrait width; height is proportional so the full content fits on one
     // continuous page — no arbitrary page splits.
-    const PAGE_W_MM = 210;
+    const PAGE_W_MM = VIEWER_CONFIG.pdf.pageWidthMm;
     const pageH = PAGE_W_MM * (canvas.height / canvas.width);
 
     const pdf = new jsPDF({
@@ -1243,15 +1290,58 @@ function stripLeadingBlockComment(content) {
 
 function languageClassFromExt(ext) {
   const map = {
+    // C family
     cpp: 'language-cpp',
+    cc: 'language-cpp',
+    cxx: 'language-cpp',
     c: 'language-c',
     h: 'language-cpp',
     hpp: 'language-cpp',
+    hxx: 'language-cpp',
+
+    // JVM / .NET
     java: 'language-java',
+    kt: 'language-kotlin',
+    kts: 'language-kotlin',
+    scala: 'language-scala',
+    cs: 'language-csharp',
+
+    // Python / scripting
     py: 'language-python',
+    rb: 'language-ruby',
+    php: 'language-php',
+    sh: 'language-bash',
+    bash: 'language-bash',
+    ps1: 'language-powershell',
+
+    // Web / JS ecosystem
     js: 'language-javascript',
+    jsx: 'language-javascript',
+    mjs: 'language-javascript',
+    cjs: 'language-javascript',
     ts: 'language-typescript',
-    cs: 'language-csharp'
+    tsx: 'language-typescript',
+    json: 'language-json',
+    html: 'language-xml',
+    htm: 'language-xml',
+    css: 'language-css',
+    scss: 'language-scss',
+    less: 'language-less',
+
+    // Systems / data / config
+    go: 'language-go',
+    rs: 'language-rust',
+    swift: 'language-swift',
+    sql: 'language-sql',
+    r: 'language-r',
+    lua: 'language-lua',
+    yaml: 'language-yaml',
+    yml: 'language-yaml',
+    toml: 'language-ini',
+    ini: 'language-ini',
+    xml: 'language-xml',
+    md: 'language-markdown',
+    txt: 'language-plaintext'
   };
   return map[(ext || '').toLowerCase()] || 'language-plaintext';
 }
@@ -1319,6 +1409,7 @@ function natSort(a, b) {
 
 /* ══════════ STARTUP ══════════ */
 window.addEventListener('DOMContentLoaded', () => {
+  document.documentElement.style.setProperty('--pdf-content-width', `${VIEWER_CONFIG.pdf.contentWidthPx}px`);
   activate('view-home');
   loadEmbeddedData();
 });
