@@ -135,6 +135,8 @@
     border-radius:0;
     padding:18px;
   }
+  .lab-bottom-note{margin:-10px 0 14px;padding:10px 12px;border:1px dashed rgba(88,166,255,.45);border-radius:8px;background:rgba(88,166,255,.08);font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--muted)}
+  .lab-bottom-note strong{color:var(--accent)}
 
   /* EX ACCORDION */
   .ex-list{display:flex;flex-direction:column;gap:12px}
@@ -214,6 +216,10 @@
   .out-dot{width:8px;height:8px;border-radius:50%;background:var(--accent3);flex-shrink:0}
   .out-label{margin-left:auto;font-size:10px;color:var(--dr-orange)}
   .output-text{background:var(--dr-bg);padding:18px;font-family:var(--mono);font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--dr-fg);overflow:visible;max-height:none}
+
+  /* LAB-LEVEL UTILS */
+  .lab-utils{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+  .lab-utils-meta{font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--muted)}
 
   @media print {
     @page { margin: 8mm; }
@@ -298,7 +304,9 @@
       <h2 id="lab-title">Lab</h2>
       <span class="section-tag" id="lab-tag"></span>
     </div>
+    <div class="lab-bottom-note"><strong>Note:</strong> Shared utils code is shown at the very bottom of this report (after all exercises), in both HTML and exported PDF.</div>
     <div class="ex-list" id="ex-list"></div>
+    <div class="lab-utils" id="lab-utils"></div>
   </div>
 
 </div>
@@ -310,6 +318,8 @@
 const VIEWER_CONFIG = {
   subtitle: 'Data Structures',
   debug: false,
+  utilsFolderName: 'utils',
+  utilsSectionTitle: 'Shared Utilities',
   pdf: {
     contentWidthPx: 900,
     viewportWidthPx: 960,
@@ -333,6 +343,8 @@ const LAB_SUBTITLE = VIEWER_CONFIG.subtitle;
 let folderData = [];
 let selectedCategory = null;
 let selectedLab = null;
+let labUtilsRenderPromise = null;
+const sharedUtilsCache = {};
 
 const EMBEDDED_DATA = [
   {
@@ -855,6 +867,7 @@ function rescan() {
 
 function loadEmbeddedData() {
   setLoading(10);
+  Object.keys(sharedUtilsCache).forEach(k => delete sharedUtilsCache[k]);
   folderData = JSON.parse(JSON.stringify(EMBEDDED_DATA));
   setLoading(100);
   setTimeout(() => setLoading(0), 350);
@@ -932,35 +945,38 @@ function renderLab(labName) {
   document.getElementById('lab-tag').textContent   = `${lab.exercises.length} exercises`;
 
   const list = document.getElementById('ex-list');
+  const utilsRoot = document.getElementById('lab-utils');
   list.innerHTML = '';
+  utilsRoot.innerHTML = '';
 
   if (!lab.exercises.length) {
     list.innerHTML = `<div class="empty-card"><div class="big">📂</div>No supported files found in ${lab.name}</div>`;
-    return;
+  } else {
+    lab.exercises.forEach(ex => {
+      const num     = ex.name.replace(/\D/g,'');
+      const fileMeta = `${ex.files.length} file${ex.files.length!==1?'s':''}`;
+
+      const item = document.createElement('div');
+      item.className = 'ex-item';
+      item.innerHTML = `
+        <div class="ex-header">
+          <div class="ex-num">${num}</div>
+          <h3>${ex.name}</h3>
+          <span class="ex-meta">${fileMeta}</span>
+          <span class="ex-chevron">▶</span>
+        </div>
+        <div class="ex-body"></div>
+      `;
+      item.querySelector('.ex-header').onclick = () => {
+        item.classList.toggle('open');
+        if (item.classList.contains('open'))
+          populateBody(item.querySelector('.ex-body'), ex);
+      };
+      list.appendChild(item);
+    });
   }
 
-  lab.exercises.forEach(ex => {
-    const num     = ex.name.replace(/\D/g,'');
-    const fileMeta = `${ex.files.length} file${ex.files.length!==1?'s':''}`;
-
-    const item = document.createElement('div');
-    item.className = 'ex-item';
-    item.innerHTML = `
-      <div class="ex-header">
-        <div class="ex-num">${num}</div>
-        <h3>${ex.name}</h3>
-        <span class="ex-meta">${fileMeta}</span>
-        <span class="ex-chevron">▶</span>
-      </div>
-      <div class="ex-body"></div>
-    `;
-    item.querySelector('.ex-header').onclick = () => {
-      item.classList.toggle('open');
-      if (item.classList.contains('open'))
-        populateBody(item.querySelector('.ex-body'), ex);
-    };
-    list.appendChild(item);
-  });
+  labUtilsRenderPromise = renderLabUtilsSection();
 }
 
 function populateBody(body, ex) {
@@ -1193,6 +1209,110 @@ function isPrimarySourceFileName(fileName) {
   return VIEWER_CONFIG.preferredMainFileBases.includes(base);
 }
 
+function appendHighlightedCodeBlock(parent, file, isMainFile) {
+  const displayContent = isMainFile ? stripLeadingBlockComment(file.content) : file.content;
+  const cb = document.createElement('div');
+  cb.className = 'code-block';
+  cb.innerHTML = `
+    <div class="code-header">
+      <div class="code-dot${isMainFile ? ' main-dot' : ''}"></div>
+      <span class="fname">${file.name}</span>
+      ${isMainFile ? '<span class="main-tag">main</span>' : `<span class="ext-tag">.${file.ext}</span>`}
+    </div>
+    <pre><code class="${languageClassFromExt(file.ext)}"></code></pre>
+  `;
+  const codeNode = cb.querySelector('code');
+  codeNode.textContent = displayContent;
+  if (window.hljs) {
+    window.hljs.highlightElement(codeNode);
+  }
+  parent.appendChild(cb);
+}
+
+async function getSharedUtilsFiles() {
+  if (!selectedCategory) return [];
+  if (Object.prototype.hasOwnProperty.call(sharedUtilsCache, selectedCategory)) {
+    return sharedUtilsCache[selectedCategory];
+  }
+
+  const dirPath = `${selectedCategory}/${VIEWER_CONFIG.utilsFolderName}/`;
+
+  try {
+    const res = await fetch(dirPath, { cache: 'no-store' });
+    if (!res.ok) {
+      sharedUtilsCache[selectedCategory] = [];
+      return [];
+    }
+
+    const html = await res.text();
+    const fileNames = parseDirectoryListingFileNames(html);
+    if (!fileNames.length) {
+      sharedUtilsCache[selectedCategory] = [];
+      return [];
+    }
+
+    const candidates = fileNames.filter(name => {
+      if (isOutputArtifact(name)) return false;
+      if (isLikelyBinaryName(name)) return false;
+      return true;
+    });
+
+    const files = (await Promise.all(candidates.map(async name => {
+      try {
+        const fileRes = await fetch(`${dirPath}${encodeURIComponent(name)}`, { cache: 'no-store' });
+        if (!fileRes.ok) return null;
+        const content = await fileRes.text();
+        if (content.includes('\u0000')) return null;
+
+        return {
+          name,
+          ext: normalizeExtension(name),
+          content
+        };
+      } catch (_) {
+        return null;
+      }
+    }))).filter(Boolean);
+
+    files.sort((a, b) => natSort(a.name, b.name));
+    sharedUtilsCache[selectedCategory] = files;
+    return files;
+  } catch (_) {
+    sharedUtilsCache[selectedCategory] = [];
+    return [];
+  }
+}
+
+async function renderLabUtilsSection() {
+  const root = document.getElementById('lab-utils');
+  if (!root) return;
+
+  root.innerHTML = `
+    <div class="exercise-note">
+      <div class="exercise-note-head">${VIEWER_CONFIG.utilsSectionTitle}</div>
+      <pre class="exercise-note-text">Loading ${selectedCategory}/${VIEWER_CONFIG.utilsFolderName}...</pre>
+    </div>
+  `;
+
+  const files = await getSharedUtilsFiles();
+  root.innerHTML = `
+    <div class="exercise-note">
+      <div class="exercise-note-head">${VIEWER_CONFIG.utilsSectionTitle}</div>
+      <div class="lab-utils-meta">Source: ${selectedCategory}/${VIEWER_CONFIG.utilsFolderName}</div>
+    </div>
+  `;
+
+  if (!files.length) {
+    const noFiles = document.createElement('pre');
+    noFiles.className = 'exercise-note-text';
+    noFiles.textContent = `No code files found in ${selectedCategory}/${VIEWER_CONFIG.utilsFolderName}.`;
+    root.appendChild(noFiles);
+    return;
+  }
+
+  files.forEach(file => appendHighlightedCodeBlock(root, file, false));
+}
+
 async function exportPdf() {
   const items = Array.from(document.querySelectorAll('#ex-list .ex-item'));
   const pending = [];
@@ -1207,6 +1327,9 @@ async function exportPdf() {
   });
 
   await Promise.all(pending);
+  if (labUtilsRenderPromise) {
+    await labUtilsRenderPromise;
+  }
 
   if (!window.html2canvas || !window.jspdf) {
     alert('PDF libraries failed to load. Please refresh and try again.');
