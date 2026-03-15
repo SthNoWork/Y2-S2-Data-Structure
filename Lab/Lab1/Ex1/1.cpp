@@ -27,8 +27,8 @@ int main() {
     student.major = getString("Enter major: ");
     student.age = getInteger("Enter age: ");
 
-    cout << "Hi, " << ((student.gender == 'M') ? "Mr" : "Mrs") << ". "
-         << student.name << "! your age is " << student.age
-         << " year old and you learn " << student.major << "!" << endl;
+    cout << "Hi, " << ((student.gender == 'M') ? "Mr" : "Mrs") << ". " << student.name
+         << "! your age is " << student.age << " year old and you learn " << student.major << "!"
+         << endl;
     return 0;
 }

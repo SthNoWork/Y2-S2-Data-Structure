@@ -7,9 +7,13 @@ using namespace std;
 
 template <typename T>
 bool tryParseExact(const string& line, T& out) {
-    stringstream ss(line);
-    char extra;
-    return (ss >> out) && !(ss >> extra);
+    stringstream stream(line); // treat the string as a stream to read from
+    char leftover;             // used to check if there are extra characters
+
+    bool parsedSuccessfully = (stream >> out);        // try to read the value
+    bool noLeftover = !(stream >> leftover);          // make sure nothing is left
+
+    return parsedSuccessfully && noLeftover;
 }
 
 int getInteger (string comment) {
@@ -18,9 +22,7 @@ int getInteger (string comment) {
 
     while (true) {
         cout << comment;
-        if (!getline(cin, line)) {
-            return 0;
-        }
+        getline(cin, line);
 
         if (tryParseExact(line, x)) {
             return x;
@@ -36,9 +38,7 @@ float getFloat(string comment) {
 
     while (true) {
         cout << comment;
-        if (!getline(cin, line)) {
-            return 0.0f;
-        }
+        getline(cin, line);
 
         if (tryParseExact(line, x)) {
             return x;
@@ -54,9 +54,7 @@ double getDouble(string comment) {
 
     while (true) {
         cout << comment;
-        if (!getline(cin, line)) {
-            return 0.0;
-        }
+        getline(cin, line);
 
         if (tryParseExact(line, x)) {
             return x;
@@ -71,9 +69,7 @@ string getString(string comment) {
 
     while (true) {
         cout << comment;
-        if (!getline(cin, line)) {
-            return "";
-        }
+        getline(cin, line);
 
         if (!line.empty()) {
             return line;
@@ -88,9 +84,7 @@ char getGender(string comment) {
 
     while (true) {
         cout << comment;
-        if (!getline(cin, line)) {
-            return '\0';
-        }
+        getline(cin, line);
 
         if (line.size() == 1) {
             char c = static_cast<char>(toupper(static_cast<unsigned char>(line[0])));
@@ -100,5 +94,36 @@ char getGender(string comment) {
         }
 
         cout << "Invalid input. Please enter M or F." << endl;
+    }
+}
+
+char getChar(string comment) {
+    string line;
+
+    while (true) {
+        cout << comment;
+        getline(cin, line);
+
+        if (line.size() == 1) {
+            return line[0];
+        }
+
+        cout << "Invalid input. Please enter exactly one character." << endl;
+    }
+}
+
+int getOption(string comment, int maxOption) {
+    if (maxOption < 0) {
+        return 0;
+    }
+
+    while (true) {
+        int option = getInteger(comment);
+        if (option >= 0 && option <= maxOption) {
+            return option;
+        }
+
+        cout << "Invalid option. Please enter a number from 0 to "
+             << maxOption << "." << endl;
     }
 }
