@@ -24,24 +24,22 @@ int main() {
     char gender = getGender("Enter gender (M/F): ");
     double salary = getDouble("Enter salary: ");
 
-    double taxRate = 0; // default to 0 (no tax)
+    double taxRate = 0;
 
-    // tax rules differ by gender
-    if (gender == 'M') {
-        if (salary > 1000) taxRate = 0.095;     // 9.5%
-        else if (salary >= 500) taxRate = 0.07; // 7%
-        else if (salary >= 300) taxRate = 0.05; // 5%
-        // below 300: taxRate stays 0
+    if (toupper(gender) == 'M') {
+        if (salary > 1000) taxRate = 0.095;
+        else if (salary >= 500) taxRate = 0.07;
+        else if (salary >= 300) taxRate = 0.05;
+
     } else {
-        if (salary > 1000) taxRate = 0.08;       // 8%
-        else if (salary >= 500) taxRate = 0.065; // 6.5%
-        else if (salary >= 300) taxRate = 0.035; // 3.5%
-        // below 300: taxRate stays 0
+        if (salary > 1000) taxRate = 0.08;
+        else if (salary >= 500) taxRate = 0.065;
+        else if (salary >= 300) taxRate = 0.035;
     }
 
-    double tax = salary * taxRate; // compute tax amount
-
-    cout << "\nName: " << name << endl;
+    double tax = salary * taxRate;
+    cout << endl;
+    cout << "Name: " << name << endl;
     cout << "Salary: $" << salary << endl;
 
     if (tax == 0) {

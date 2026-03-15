@@ -1,5 +1,5 @@
 /*
-Write a C++ program to convert a minute to a time format which consists of hour, minute, and
+Write a C++ program to convert a  minute to a time format which consists of hour, minute, and
 second (h:m:s). A user is required to input a minute.
 ▪ Hours = minutes / 60
 ▪ Remainderminutes = minutes % 60

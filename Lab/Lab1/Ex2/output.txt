@@ -1,0 +1,13 @@
+Enter a character: a
+Vowel.
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex2\Main.exe (process 12148) exited with code 0 (0x0).
+Press any key to close this window . . .
+
+=== CUT ===
+
+Enter a character: b
+Not a vowel.
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex2\Main.exe (process 12988) exited with code 0 (0x0).
+Press any key to close this window . . .

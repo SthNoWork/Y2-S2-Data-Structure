@@ -1,0 +1,24 @@
+Enter name: Bob
+Enter gender (M/F): m
+Enter salary: 299
+
+Name: Bob
+Salary: $299
+No tax required.
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex3\Main.exe (process 10804) exited with code 0 (0x0).
+Press any key to close this window . . .
+
+=== CUT ===
+
+Enter name: gyaru
+Enter gender (M/F): F
+Enter salary: 300
+
+Name: gyaru
+Salary: $300
+Tax rate: 3.5%
+Tax to pay: $10.5
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex3\Main.exe (process 3808) exited with code 0 (0x0).
+Press any key to close this window . . .

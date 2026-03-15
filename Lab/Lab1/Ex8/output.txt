@@ -1,0 +1,73 @@
+1. Celsius to Fahrenheit
+2. Fahrenheit to Celsius
+3. Quadratic Equation Roots
+4. BMI Calculator
+5. Sum 1 to n (except divisible by 3)
+0. Exit
+Enter option: 1
+Enter Celsius: 50
+50 celsius = 122 fahrenheit
+
+=== CUT ===
+
+1. Celsius to Fahrenheit
+2. Fahrenheit to Celsius
+3. Quadratic Equation Roots
+4. BMI Calculator
+5. Sum 1 to n (except divisible by 3)
+0. Exit
+Enter option: 2
+Enter Fahrenheit: 122
+122 fahrenheit = 50 celsius
+
+=== CUT ===
+
+1. Celsius to Fahrenheit
+2. Fahrenheit to Celsius
+3. Quadratic Equation Roots
+4. BMI Calculator
+5. Sum 1 to n (except divisible by 3)
+0. Exit
+Enter option: 3
+Enter a: 3
+Enter b: -5
+Enter c: -8
+Two roots: 2.66667 and -1
+
+=== CUT ===
+
+1. Celsius to Fahrenheit
+2. Fahrenheit to Celsius
+3. Quadratic Equation Roots
+4. BMI Calculator
+5. Sum 1 to n (except divisible by 3)
+0. Exit
+Enter option: 4
+Enter weight (kg): 49.5
+Enter height (m): 1.65
+BMI: 18.1818 - Underweight
+
+=== CUT ===
+
+1. Celsius to Fahrenheit
+2. Fahrenheit to Celsius
+3. Quadratic Equation Roots
+4. BMI Calculator
+5. Sum 1 to n (except divisible by 3)
+0. Exit
+Enter option: 5
+Enter n: 67
+Sum from 1 to 67 (except divisible by 3) = 1519
+
+=== CUT ===
+
+1. Celsius to Fahrenheit
+2. Fahrenheit to Celsius
+3. Quadratic Equation Roots
+4. BMI Calculator
+5. Sum 1 to n (except divisible by 3)
+0. Exit
+Enter option: 0
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex8\Main.exe (process 13604) exited with code 0 (0x0).
+Press any key to close this window . . .

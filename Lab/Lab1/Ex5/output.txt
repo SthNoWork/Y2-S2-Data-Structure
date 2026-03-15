@@ -1,0 +1,5 @@
+Enter minutes: 1039
+17h : 19m : 1140s
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex5\Main.exe (process 16064) exited with code 0 (0x0).
+Press any key to close this window . . .

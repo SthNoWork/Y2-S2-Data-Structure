@@ -1,54 +1,54 @@
 /*
-Write a C++ program to compute tax salary of a person. The program asks for name, gender and salary
-of a person and tell him/her how much tax he/she is required to pay. The tax is computed based on
-the rules below:
-▪ For males
-  • Salary more than 1000 USD, pay tax 9.5%
-  • Salary 500 – 1000 USD, pay tax 7%
-  • Salary 300 – 500 USD, pay tax 5%
-  • Salary less than 300, no need to pay tax
-▪ For females
-  • Salary more than 1000 USD, pay tax 8%
-  • Salary 500 – 1000 USD, pay tax 6.5%
-  • Salary 300 – 500 USD, pay tax 3.5%
-  • Salary less than 300, no need to pay tax
+Create a C++ program that can play a game Rock-Paper-Scissor. The game plays between the
+user against the computer.
 */
 
 #include "../../utils/input.cpp"
 #include <iostream>
+#include <random>
 
 using namespace std;
 
+int determineWin(int user, int computer) {
+    if (user == computer) return 0;
+
+    if ((user == 1 && computer == 2) ||
+        (user == 2 && computer == 3) ||
+        (user == 3 && computer == 1))
+        return 1;
+
+    return -1;
+}
+
 int main() {
-    string name = getString("Enter name: ");
-    char gender = getGender("Enter gender (M/F): ");
-    double salary = getDouble("Enter salary: ");
 
-    double taxRate = 0; // default to 0 (no tax)
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dist(1, 3);
 
-    // tax rules differ by gender
-    if (gender == 'M') {
-        if (salary > 1000) taxRate = 0.095;     // 9.5%
-        else if (salary >= 500) taxRate = 0.07; // 7%
-        else if (salary >= 300) taxRate = 0.05; // 5%
-        // below 300: taxRate stays 0
-    } else {
-        if (salary > 1000) taxRate = 0.08;       // 8%
-        else if (salary >= 500) taxRate = 0.065; // 6.5%
-        else if (salary >= 300) taxRate = 0.035; // 3.5%
-        // below 300: taxRate stays 0
-    }
+    int option;
+    int computerChoice;
+    int result;
 
-    double tax = salary * taxRate; // compute tax amount
+    while (true) {
+        cout << "=== Rock-Paper-Scissor ===" << endl;
+        cout << "1. Paper" << endl;
+        cout << "2. Rock" << endl;
+        cout << "3. Scissor" << endl;
+        cout << "0. Exit" << endl;
 
-    cout << "\nName: " << name << endl;
-    cout << "Salary: $" << salary << endl;
+        option = getOption("Option: ", 3);
+        if (option == 0) break;
 
-    if (tax == 0) {
-        cout << "No tax required." << endl;
-    } else {
-        cout << "Tax rate: " << (taxRate * 100) << "%" << endl;
-        cout << "Tax to pay: $" << tax << endl;
+        computerChoice = dist(gen);
+
+        result = determineWin(option, computerChoice);
+
+        if (result == 0) cout << "Draw\n";
+        else if (result == 1) cout << "You win!\n";
+        else cout << "You lose!\n";
+
+        cout << endl;
     }
 
     return 0;

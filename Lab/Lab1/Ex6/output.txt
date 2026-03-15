@@ -1,0 +1,7 @@
+Enter a number greater than 50: 50
+Invalid input. Please enter a number greater than 50.
+Enter a number greater than 50: 51
+Summation from 1 to 51 (except 10 and 30) = 1286
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex6\Main.exe (process 9572) exited with code 0 (0x0).
+Press any key to close this window . . .

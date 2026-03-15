@@ -59,6 +59,51 @@ The viewer will:
   - `stdout.txt`
   - `result.txt`
 
+### Output section marker (recommended)
+
+If your output file also contains terminal noise/log lines, add a cut line. Each block becomes its own output panel in HTML/PDF:
+
+```text
+=== CUT ===
+<first output block>
+
+=== CUT ===
+<second output block>
+```
+
+You can also use:
+
+```text
+===cut===
+```
+
+Or these older supported markers:
+
+```text
+=== REPORT OUTPUT ===
+=======================cut here
+```
+
+Example:
+
+```text
+Microsoft (R) C/C++ Optimizing Compiler Version ...
+[build logs]
+
+=== CUT ===
+Enter a character: a
+Vowel.
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex2\Main.exe (process 12148) exited with code 0 (0x0).
+Press any key to close this window . . .
+```
+
+Behavior:
+
+- Each cut-separated block is rendered as its own output panel.
+- Common terminal footer lines like `...exited with code...` and `Press any key to close this window...` are removed automatically from each block.
+- If markers are missing, the whole file is shown as one output panel (backward compatible).
+
 ## 4. Shared Utils Section (Bottom of Report)
 
 The viewer loads shared utility files from:

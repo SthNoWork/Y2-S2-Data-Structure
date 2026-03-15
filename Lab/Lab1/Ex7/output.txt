@@ -1,0 +1,48 @@
+ID:1
+ISBN: 978-0-13-468599-1
+Title: The C++ Programming Language
+Published Year: 2013
+Price:$ 59.99
+Authors: Bjarne Stroustrup
+
+ID:2
+ISBN: 978-0-13-235088-4
+Title: Clean Code
+Published Year: 2008
+Price:$ 35.99
+Authors: Robert C. Martin
+
+ID:3
+ISBN: 978-0-20-163361-0
+Title: The Pragmatic Programmer
+Published Year: 1999
+Price:$ 49.99
+Authors: Andrew Hunt, David Thomas
+
+ID:4
+ISBN: 978-0-59-651798-1
+Title: JavaScript: The Good Parts
+Published Year: 2008
+Price:$ 29.99
+Authors: Douglas Crockford
+
+ID:5
+ISBN: 978-0-13-110362-7
+Title: The C Programming Language
+Published Year: 1988
+Price:$ 39.99
+Authors: Brian Kernighan, Dennis Ritchie
+
+
+--- Search by ISBN ---
+Enter ISBN: 978-0-13-110362-7
+ID:5
+ISBN: 978-0-13-110362-7
+Title: The C Programming Language
+Published Year: 1988
+Price:$ 39.99
+Authors: Brian Kernighan, Dennis Ritchie
+
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex7\Main.exe (process 14176) exited with code 0 (0x0).
+Press any key to close this window . . .

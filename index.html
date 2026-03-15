@@ -320,6 +320,14 @@ const VIEWER_CONFIG = {
   debug: false,
   utilsFolderName: 'utils',
   utilsSectionTitle: 'Shared Utilities',
+  outputSectionMarkers: {
+    starts: [
+      '=== CUT ===',
+      '===cut===',
+      '=== REPORT OUTPUT ===',
+      '=======================cut here'
+    ]
+  },
   pdf: {
     contentWidthPx: 900,
     viewportWidthPx: 960,
@@ -1020,21 +1028,35 @@ function populateBody(body, ex) {
       body.appendChild(cb);
     });
 
-    const ob = document.createElement('div');
-    ob.className = 'output-block';
-    ob.innerHTML = `
-      <div class="out-header">
-        <div class="out-dot"></div>
-        <span class="fname">output.txt</span>
-        <span class="out-label">${VIEWER_CONFIG.outputLabel}</span>
-      </div>
-      <pre class="output-text">Loading output...</pre>
-    `;
-    body.appendChild(ob);
-
-    const outputNode = ob.querySelector('.output-text');
-    const outputText = await fetchExerciseOutputText(ex);
-    outputNode.textContent = outputText ?? 'No output.txt found for this exercise.';
+    const outputSections = await fetchExerciseOutputSections(ex);
+    if (!outputSections.length) {
+      const ob = document.createElement('div');
+      ob.className = 'output-block';
+      ob.innerHTML = `
+        <div class="out-header">
+          <div class="out-dot"></div>
+          <span class="fname">output.txt</span>
+          <span class="out-label">${VIEWER_CONFIG.outputLabel}</span>
+        </div>
+        <pre class="output-text">No output.txt found for this exercise.</pre>
+      `;
+      body.appendChild(ob);
+    } else {
+      outputSections.forEach((section, index) => {
+        const ob = document.createElement('div');
+        ob.className = 'output-block';
+        ob.innerHTML = `
+          <div class="out-header">
+            <div class="out-dot"></div>
+            <span class="fname">output.txt${outputSections.length > 1 ? ` · section ${index + 1}` : ''}</span>
+            <span class="out-label">${VIEWER_CONFIG.outputLabel}</span>
+          </div>
+          <pre class="output-text"></pre>
+        `;
+        ob.querySelector('.output-text').textContent = section;
+        body.appendChild(ob);
+      });
+    }
 
     body.dataset.loaded = '1';
     delete body.dataset.loading;
@@ -1080,9 +1102,9 @@ function showLab(name) {
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-async function fetchExerciseOutputText(ex) {
-  if (Object.prototype.hasOwnProperty.call(ex, 'outputTextCache')) {
-    return ex.outputTextCache;
+async function fetchExerciseOutputSections(ex) {
+  if (Object.prototype.hasOwnProperty.call(ex, 'outputSectionsCache')) {
+    return ex.outputSectionsCache;
   }
 
   const baseDir = `${selectedCategory}/${selectedLab}/${ex.name}/`;
@@ -1091,15 +1113,51 @@ async function fetchExerciseOutputText(ex) {
     try {
       const res = await fetch(path, { cache: 'no-store' });
       if (!res.ok) continue;
-      ex.outputTextCache = await res.text();
-      return ex.outputTextCache;
+      const raw = await res.text();
+      ex.outputSectionsCache = extractReportOutputSections(raw);
+      return ex.outputSectionsCache;
     } catch (_) {
       // Try the next candidate.
     }
   }
 
-  ex.outputTextCache = null;
-  return null;
+  ex.outputSectionsCache = [];
+  return ex.outputSectionsCache;
+}
+
+function extractReportOutputSections(rawText) {
+  if (!rawText) return [];
+
+  const markers = VIEWER_CONFIG.outputSectionMarkers.starts || [];
+  const escapedMarkers = markers
+    .filter(Boolean)
+    .map(marker => marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+
+  if (!escapedMarkers.length) {
+    const cleaned = stripTerminalNoise(rawText);
+    return cleaned ? [cleaned] : [];
+  }
+
+  const markerRegex = new RegExp(`(?:^|\\r?\\n)(?:${escapedMarkers.join('|')})(?=\\r?\\n|$)`, 'g');
+  const rawSections = rawText.split(markerRegex);
+  const sections = rawSections
+    .map(section => stripTerminalNoise(section))
+    .filter(Boolean);
+
+  return sections;
+}
+
+function stripTerminalNoise(text) {
+  const lines = text.split(/\r?\n/);
+  const filtered = lines.filter(line => {
+    const trimmed = line.trim();
+    if (!trimmed) return true;
+    if (/^[A-Za-z]:\\.*\.exe\s+\(process\s+\d+\)\s+exited\s+with\s+code/i.test(trimmed)) return false;
+    if (/^Press any key to close this window/i.test(trimmed)) return false;
+    return true;
+  });
+
+  return filtered.join('\n').replace(/^\s+|\s+$/g, '');
 }
 
 async function hydrateExerciseFiles(ex) {

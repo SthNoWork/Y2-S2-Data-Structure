@@ -1,8 +1,8 @@
 /*
 Create 5 functions to:
-i)   convert temperature Celsius to Fahrenheit: Fahrenheit = (Celsius * 9.0
-/ 5.0) + 32 ii)  convert temperature Fahrenheit to Celsius: Celsius =
-(Fahrenheit – 32) * 5.0 / 9.0 iii) find root of quadratic equation ax2+bx+c=0.
+i)   convert temperature Celsius to Fahrenheit: Fahrenheit = (Celsius * 9.0 / 5.0) + 32
+ii)  convert temperature Fahrenheit to Celsius: Celsius = (Fahrenheit – 32) * 5.0 / 9.0
+iii) find root of quadratic equation ax2+bx+c=0.
 iv)  compute BMI of a person's weight and height and tell whether he/she is
 overweight, underweight and other terms according to BMI list:
      - bmi = weight / (height * height)
@@ -10,31 +10,29 @@ overweight, underweight and other terms according to BMI list:
      - bmi < 25,   normal weight
      - bmi < 30,   overweight
      - else,       obese
-v)   sum numbers from 1 to n except those numbers that are divisible by 3, n is
-a parameter. Design a menu program to demonstrate these 5 functions.
+v)   sum numbers from 1 to n except those numbers that are divisible by 3, n is a parameter.
+
+Design a menu program to demonstrate these 5 functions.
 */
 
 #include "../../utils/input.cpp"
-#include <cmath> // for sqrt()
+#include <cmath>
 #include <iostream>
 
 using namespace std;
 
-// i) Celsius to Fahrenheit
 void celsiusToFahrenheit() {
     double celsius = getDouble("Enter Celsius: ");
     double fahrenheit = (celsius * 9.0 / 5.0) + 32;
-    cout << celsius << "°C = " << fahrenheit << "°F" << endl;
+    cout << celsius << " celsius = " << fahrenheit << " fahrenheit" << endl;
 }
 
-// ii) Fahrenheit to Celsius
 void fahrenheitToCelsius() {
     double fahrenheit = getDouble("Enter Fahrenheit: ");
     double celsius = (fahrenheit - 32) * 5.0 / 9.0;
-    cout << fahrenheit << "°F = " << celsius << "°C" << endl;
+    cout << fahrenheit << " fahrenheit = " << celsius << " celsius" << endl;
 }
 
-// iii) Quadratic equation roots
 void quadraticRoots() {
     double a = getDouble("Enter a: ");
     double b = getDouble("Enter b: ");
@@ -54,7 +52,6 @@ void quadraticRoots() {
     }
 }
 
-// iv) BMI calculator
 void bmiCalculator() {
     double weight = getDouble("Enter weight (kg): ");
     double height = getDouble("Enter height (m): ");
@@ -63,21 +60,18 @@ void bmiCalculator() {
 
     cout << "BMI: " << bmi << " - ";
 
-    // clang-format off
     if (bmi < 18.5) cout << "Underweight" << endl;
     else if (bmi < 25) cout << "Normal weight" << endl;
     else if (bmi < 30) cout << "Overweight" << endl;
     else cout << "Obese" << endl;
-    // clang-format on
 }
 
-// v) Sum 1 to n except divisible by 3
 void sumExceptDivisibleBy3() {
     int n = getInteger("Enter n: ");
     int sum = 0;
 
     for (int i = 1; i <= n; i++) {
-        if (i % 3 == 0) continue; // skip numbers divisible by 3
+        if (i % 3 == 0) continue;
         sum += i;
     }
 
@@ -86,12 +80,13 @@ void sumExceptDivisibleBy3() {
 
 int main() {
     while (true) {
-        cout << "\n0. Exit" << endl;
+        cout << endl;
         cout << "1. Celsius to Fahrenheit" << endl;
         cout << "2. Fahrenheit to Celsius" << endl;
         cout << "3. Quadratic Equation Roots" << endl;
         cout << "4. BMI Calculator" << endl;
         cout << "5. Sum 1 to n (except divisible by 3)" << endl;
+        cout << "0. Exit" << endl;
 
         int option = getOption("Enter option: ", 5);
 

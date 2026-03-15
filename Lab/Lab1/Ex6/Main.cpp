@@ -11,7 +11,6 @@ using namespace std;
 int main() {
     int n;
 
-    // keep asking until n is greater than 50
     while (true) {
         n = getInteger("Enter a number greater than 50: ");
         if (n > 50) break;
@@ -20,7 +19,7 @@ int main() {
 
     int sum = 0;
     for (int i = 1; i <= n; i++) {
-        if (i == 10 || i == 30) continue; // skip 10 and 30
+        if (i == 10 || i == 30) continue;
         sum += i;
     }
 

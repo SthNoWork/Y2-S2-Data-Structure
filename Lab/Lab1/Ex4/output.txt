@@ -1,0 +1,39 @@
+=== Rock-Paper-Scissor ===
+1. Paper
+2. Rock
+3. Scissor
+0. Exit
+Option: 1
+You win!
+
+=== CUT ===
+
+=== Rock-Paper-Scissor ===
+1. Paper
+2. Rock
+3. Scissor
+0. Exit
+Option: 1
+Draw
+
+=== CUT ===
+
+=== Rock-Paper-Scissor ===
+1. Paper
+2. Rock
+3. Scissor
+0. Exit
+Option: 1
+You lose!
+
+=== CUT ===
+
+=== Rock-Paper-Scissor ===
+1. Paper
+2. Rock
+3. Scissor
+0. Exit
+Option: 0
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex4\Main.exe (process 15276) exited with code 0 (0x0).
+Press any key to close this window . . .
