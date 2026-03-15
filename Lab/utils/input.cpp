@@ -8,15 +8,18 @@ using namespace std;
 template <typename T>
 bool tryParseExact(const string& line, T& out) {
     stringstream stream(line); // treat the string as a stream to read from
-    char leftover;             // used to check if there are extra characters
 
-    bool parsedSuccessfully = (stream >> out);        // try to read the value
-    bool noLeftover = !(stream >> leftover);          // make sure nothing is left
+    stream >> out; // try to read the value
+    if (stream.fail()) {
+        return false;
+    }
 
-    return parsedSuccessfully && noLeftover;
+    // Ignore trailing spaces, then require end-of-input.
+    stream >> ws;
+    return stream.eof();
 }
 
-int getInteger (string comment) {
+int getInteger(string comment) {
     string line;
     int x;
 

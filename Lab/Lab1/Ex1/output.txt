@@ -1,0 +1,8 @@
+Enter name: Hengrith
+Enter gender (M/F): M
+Enter major: SE
+Enter age: 20
+Hi, Mr. Hengrith! your age is 20 year old and you learn SE!
+
+D:\Github\Y2-S2-Data-Structure\Lab\Lab1\Ex1\Main.exe (process 9776) exited with code 0 (0x0).
+Press any key to close this window . . .
