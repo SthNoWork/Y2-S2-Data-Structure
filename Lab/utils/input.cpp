@@ -67,6 +67,21 @@ double getDouble(string comment) {
     }
 }
 
+char getChar(string comment) {
+    string line;
+
+    while (true) {
+        cout << comment;
+        getline(cin, line);
+
+        if (line.size() == 1) {
+            return line[0];
+        }
+
+        cout << "Invalid input. Please enter exactly one character." << endl;
+    }
+}
+
 string getString(string comment) {
     string line;
 
@@ -83,35 +98,13 @@ string getString(string comment) {
 }
 
 char getGender(string comment) {
-    string line;
-
     while (true) {
-        cout << comment;
-        getline(cin, line);
-
-        if (line.size() == 1) {
-            char c = static_cast<char>(toupper(static_cast<unsigned char>(line[0])));
-            if (c == 'M' || c == 'F') {
-                return c;
-            }
+        char gender = toupper(getChar(comment));
+        if (gender == 'M' || gender == 'F') {
+            return gender;
         }
 
         cout << "Invalid input. Please enter M or F." << endl;
-    }
-}
-
-char getChar(string comment) {
-    string line;
-
-    while (true) {
-        cout << comment;
-        getline(cin, line);
-
-        if (line.size() == 1) {
-            return line[0];
-        }
-
-        cout << "Invalid input. Please enter exactly one character." << endl;
     }
 }
 
