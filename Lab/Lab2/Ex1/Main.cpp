@@ -13,6 +13,6 @@ int sumOdd(int num) {
 }
 int main() {
     int n = 10;
-    cout << sumOdd(n) << endl;
+    cout << "Sum odd from 1 to " << n << " is: "<< sumOdd(n) << endl;
     return 0;
 }

@@ -1,0 +1,5 @@
+Enter number: 55
+Enter number: 100
+Enter number: 67
+Enter number: -1
+Total = 222

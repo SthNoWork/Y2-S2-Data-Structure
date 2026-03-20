@@ -1,0 +1,25 @@
+=== Display * or Number(s) ===
+1. Display *
+2. Display number(s)
+0. Exit
+Option: 1
+Enter amount of *: 10
+* * * * * * * * * * 
+
+=== CUT ===
+
+=== Display * or Number(s) ===
+1. Display *
+2. Display number(s)
+0. Exit
+Option: 2
+Enter number: 10
+10 9 8 7 6 5 4 3 2 1 
+
+=== CUT ===
+
+=== Display * or Number(s) ===
+1. Display *
+2. Display number(s)
+0. Exit
+Option: 0
