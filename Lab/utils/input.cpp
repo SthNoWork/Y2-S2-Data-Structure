@@ -6,7 +6,7 @@
 using namespace std;
 
 template <typename T>
-bool tryParseExact(const string& line, T& out) {
+bool tryParseExact(const string &line, T &out) {
     stringstream stream(line); // treat the string as a stream to read from
 
     stream >> out; // try to read the value
