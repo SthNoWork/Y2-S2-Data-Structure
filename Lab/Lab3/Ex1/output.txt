@@ -1,0 +1,5 @@
+Variable   Address              Value     
+n1         0000003C526FFCC0     7
+n2         0000003C526FFCC4     3
+n3         0000003C526FFCC8     15        
+n3 = 10

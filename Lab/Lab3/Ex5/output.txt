@@ -1,0 +1,10 @@
+Enter integer: 76
+Enter integer: 34
+Enter integer: 1
+Enter integer: 3
+Enter integer: 5
+Enter integer: 99
+Enter integer: 56
+--- Results ---
+Maximum: 99
+Minimum: 1

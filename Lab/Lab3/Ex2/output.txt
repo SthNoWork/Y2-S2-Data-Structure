@@ -1,0 +1,2 @@
+Enter Integer: 3
+Result: 10
