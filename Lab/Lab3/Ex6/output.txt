@@ -1,5 +1,13 @@
-Enter number: 55
-Enter number: 100
-Enter number: 67
-Enter number: -1
-Total = 222
+Enter float number: 6.7 
+Enter float number: 6.9
+Enter float number: 4.2
+Enter float number: 6.5 
+Enter float number: 1.1
+Enter float number: 1.00000000000000000
+Enter float number: 9.3
+
+Stored Numbers: 6.7  6.9  4.2  6.5  1.1  1  9.3  
+
+--- Results ---
+Summation:      35.7
+Multiplication: 12911.1

@@ -1,5 +1,5 @@
 /*
-3. Write a function in C++ program to exchange two numbers.
+Write a function in C++ program to exchange two numbers.
 These two variables are passed through parameters of the function using pointer.   
     void exchange(float *a, float *b)
 */
