@@ -1,10 +1,4 @@
-Enter integer: 76
-Enter integer: 34
-Enter integer: 1
-Enter integer: 3
-Enter integer: 5
-Enter integer: 99
-Enter integer: 56
---- Results ---
-Maximum: 99
-Minimum: 1
+Main.cpp
+Enter integer: Enter integer: Enter integer: Enter integer: Enter integer: Enter integer: Enter integer: --- Results ---
+Maximum: 32758
+Minimum: 0
