@@ -1,5 +1,5 @@
 /*
-2. Write a Write a C++ program to get a number, say n, from a user. Then modify the value of n to n+7 
+Write a Write a C++ program to get a number, say n, from a user. Then modify the value of n to n+7 
 using a pointer variable.  
 Remark: You are not allowed to use n=n+7. Use pointer operation instead.
 */
