@@ -1,0 +1,2 @@
+Create a function to display all data in the list that implemented in the exercises 2 and 3 above. Test
+your program in main. Finally, add 2 more students to the list. Display all data.
