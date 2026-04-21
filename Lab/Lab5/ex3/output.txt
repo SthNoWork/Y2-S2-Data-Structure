@@ -1,0 +1,6 @@
+Product list:
+ID:5 | Eraser | $0.5
+ID:3 | Book | $12
+ID:1 | Pen | $1.5
+ID:2 | Laptop | $999
+ID:4 | Phone | $299

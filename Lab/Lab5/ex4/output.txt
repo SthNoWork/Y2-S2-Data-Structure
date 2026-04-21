@@ -1,0 +1,26 @@
+=== All Products ===
+ID:5 | Eraser | $0.5
+ID:3 | Book | $12
+ID:1 | Pen | $1.5
+ID:2 | Laptop | $999
+ID:4 | Phone | $299
+
+=== Search by Name: Book ===
+Found -> ID:3 | Book | $12
+
+=== Search by Price threshold $50 ===
+Section 1 (price < 50):
+  Eraser $0.5
+  Book $12
+  Pen $1.5
+Section 2 (price > 50):
+  Laptop $999
+  Phone $299
+
+=== Update ID 3 -> Notebook $25 ===
+Updated.
+ID:5 | Eraser | $0.5
+ID:3 | Notebook | $25
+ID:1 | Pen | $1.5
+ID:2 | Laptop | $999
+ID:4 | Phone | $299
