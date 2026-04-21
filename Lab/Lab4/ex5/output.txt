@@ -1,0 +1,14 @@
+*** A program to store number as many as possible: ***
+Enter a number: 0
+You have entered the number 0 once. Only 1 more left. We will quit the program.
+Enter a number: 23
+Enter a number: 15
+Enter a number: 35
+Enter a number: 3
+Enter a number: 6
+Enter a number: 9
+Enter a number: 0
+You have entered the number 0 twice so far. The program is going to stop now.
+
+All data in the list are: 23 15 35 3 6 9 
+Summation of all numbers is: 91
