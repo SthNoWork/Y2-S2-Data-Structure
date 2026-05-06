@@ -1,0 +1,6 @@
+2. Using the doubly linked list from problem above. 
+
+1) Get a number n from a user.
+2) Generate n random numbers and store in the list.
+3) Display the list. 
+4) Compute summation and average of all numbers in the list then display the result on screen.

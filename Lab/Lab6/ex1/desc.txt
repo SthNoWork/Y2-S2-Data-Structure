@@ -1,0 +1,8 @@
+1. Create an element structure and a list structure that can store a list of integer numbers. 
+
+Create 5 functions to:
+1) Create an empty list
+2) Add a number to begin of list
+3) Add a number to end of list
+4) Add a number to specific position in the list
+5) display list

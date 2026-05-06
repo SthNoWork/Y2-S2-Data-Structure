@@ -1,0 +1,7 @@
+3. Using the doubly linked list from problem above. 
+
+Create functions to delete the element from the list: 
+1) delete one element from beginning
+2) delete one element from the end of the list
+3) delete one element at the position. 
+4) Display all data in the list. 
