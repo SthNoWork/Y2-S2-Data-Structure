@@ -1,58 +1,53 @@
 #include <iostream>
 #include "../ex1/ex1.h"
 
-void add(List* list, int value) {
-    Node* newNode = new Node();
-    newNode->data = value;
-    newNode->next = nullptr;
-    
-    if (list->head == nullptr) {
-        list->head = newNode;
-        list->tail = newNode;
+void add(List* ls, int& num) {
+    Element* node = new Element;
+    node->data = num;
+    node->next = nullptr;
+
+    if (ls->length == 0) {
+        ls->head = node;
+        ls->tail = node;
     } else {
-        list->tail->next = newNode;
-        list->tail = newNode;
+        ls->tail->next = node;
+        ls->tail = node;
     }
+    ls->length++;
 }
 
+using namespace std;
+
 int main() {
-    List* numbers = new List();
-    numbers->head = nullptr;
-    numbers->tail = nullptr;
-    
-    int zeroCount = 0;
-    int input;
-    
-    std::cout << "*** A program to store number as many as possible: ***" << std::endl;
-    
-    while (zeroCount < 2) {
-        std::cout << "Enter a number: ";
-        std::cin >> input;
-        
-        if (input == 0) {
-            zeroCount++;
-            if (zeroCount == 1) {
-                std::cout << "You have entered the number 0 once. Only 1 more left. We will quit the program." << std::endl;
-            } else if (zeroCount == 2) {
-                std::cout << "You have entered the number 0 twice so far. The program is going to stop now." << std::endl;
+    int num;
+    int count = 0;
+    List* ls = new List;
+    ls->length = 0;
+    ls->head = nullptr;
+    ls->tail = nullptr;
+
+    while (count < 2) {
+        cout << "Enter a number: ";
+        cin >> num;
+        cin.clear();
+
+        if (num == 0) {
+            count++;
+            if (count == 1) {
+                cout << "You have entered 0 once. 1 more left to quit." << endl;
             }
-        } else {
-            add(numbers, input);
         }
+
+        add(ls, num);
     }
-    
-    std::cout << "\nAll data in the list are: ";
-    Node* current = numbers->head;
-    int sum = 0;
-    
-    while (current != nullptr) {
-        std::cout << current->data << " ";
-        sum += current->data;
-        current = current->next;
+    cout << "You have entered the number 0 twice so far. The program is going to stop now" << endl;
+    cout << "All data in the list are: ";
+
+    Element* node = new Element;
+    node = ls->head;
+    for (int i = 0; ls->length > i; i++) {
+        cout << node->data << ' ';
+        node = node->next;
     }
-    std::cout << std::endl;
-    
-    std::cout << "Summation of all numbers is: " << sum << std::endl;
-    
     return 0;
 }

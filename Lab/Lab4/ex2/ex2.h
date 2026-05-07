@@ -1,18 +1,19 @@
 #include <string>
+using namespace std;
 
 struct Student {
-    std::string id;
-    std::string name;
+    string id;
+    string name;
     int year;
-    std::string degree;
 };
 
-struct StudentNode {
+struct Element {
     Student data;
-    StudentNode* next;
+    Element* next;
 };
 
 struct ListStudent {
-    StudentNode* head;
-    StudentNode* tail;
+    int length;
+    Element* head;
+    Element* tail;
 };

@@ -1,9 +1,10 @@
-struct Node {
+struct Element {
     int data;
-    Node* next;
+    Element* next;
 };
 
 struct List {
-    Node* head;
-    Node* tail;
+    int length;
+    Element* head;
+    Element* tail;
 };

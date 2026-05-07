@@ -1,22 +1,42 @@
-#include "../ex2/ex2.h"
+#include <string>
+using namespace std;
+
+struct Student {
+    string id;
+    string name;
+    int year;
+};
+
+struct Element {
+    Student data;
+    Element* next;
+};
+
+struct ListStudent {
+    int length;
+    Element* head;
+    Element* tail;
+};
 
 ListStudent* createEmptyList() {
-    ListStudent* LS = new ListStudent();
-    LS->head = nullptr;
-    LS->tail = nullptr;
-    return LS;
+    ListStudent* ls = new ListStudent;
+    ls->length = 0;
+    ls->head = nullptr;
+    ls->tail = nullptr;
+    return ls;
 }
 
-void add(Student s, ListStudent* LS) {
-    StudentNode* newNode = new StudentNode();
-    newNode->data = s;
-    newNode->next = nullptr;
-    
-    if (LS->head == nullptr) {
-        LS->head = newNode;
-        LS->tail = newNode;
+void add(ListStudent* ls, Student stu) {
+    Element* node = new Element;
+    node->data = stu;
+    node->next = nullptr;
+
+    if (ls->length == 0) {
+        ls->head = node;
+        ls->tail = node;
     } else {
-        LS->tail->next = newNode;
-        LS->tail = newNode;
+        ls->tail->next = node;
+        ls->tail = node;
     }
+    ls->length++;
 }
