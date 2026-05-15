@@ -1,0 +1,4 @@
+Write a program to ask a piece of text from a user.
+Display the text in a reverse order using stack. 
+
+Hint: Push each character in the text into stack. Display stack.
