@@ -1,2 +1,4 @@
 Write a C++ program to implement a stack data structure using a singly linked list to store integer numbers with the following operations:
-push(), pop(), peek(), isEmpty(), and function to count and return the number of elements in the stack, and display function to print all elements in the stack from top to bottom.
+
+push(), pop(), peek(), isEmpty(), and function to count and return the number of elements in the stack,
+and display function to print all elements in the stack from top to bottom.
