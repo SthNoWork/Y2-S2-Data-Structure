@@ -1,8 +1,4 @@
-#ifndef EX1_H
-#define EX1_H
-
 #include <iostream>
-using namespace std;
 
 class List {
 private:

@@ -1,4 +1,4 @@
 4. Using the doubly linked list from problem above.
 
-1) Give the minimum number in the list
-2) Give the maximum number in the list
+1) Give the minimum number in the list,
+2) Give the maximum number in the list. 
