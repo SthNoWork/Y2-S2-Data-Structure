@@ -1,0 +1,9 @@
+Enter number of num to generate: 5
+List contents:
+Num: 38
+Num: 6
+Num: 77
+Num: 87
+Num: 49
+Summation: 257
+Average: 51.4

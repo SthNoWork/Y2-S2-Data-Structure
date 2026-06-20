@@ -1,0 +1,10 @@
+List elements:
+Num: 35
+Num: 12
+Num: 89
+Num: 4
+Num: 56
+Num: 72
+
+Minimum element: 4
+Maximum element: 89

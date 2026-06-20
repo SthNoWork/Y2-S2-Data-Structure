@@ -1,0 +1,21 @@
+Original list:
+Num: 10
+Num: 20
+Num: 30
+Num: 40
+Num: 50
+
+Deleting from beginning (head):
+Num: 20
+Num: 30
+Num: 40
+Num: 50
+
+Deleting from end (tail):
+Num: 20
+Num: 30
+Num: 40
+
+Deleting at position 2:
+Num: 20
+Num: 40
