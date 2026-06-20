@@ -1,6 +1,6 @@
 Write a C++ program to implement a stack data structure using an array to store integer numbers.
 
-Write functions for: 
-push(), pop(), peek(), isEmpty(), isFull(), displayStack(). 
+Write functions for:
+push(), pop(), peek(), isEmpty(), isFull(), displayStack().
 
 Test the implementation by pushing and popping several elements.
