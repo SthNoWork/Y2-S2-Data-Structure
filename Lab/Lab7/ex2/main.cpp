@@ -1,12 +1,3 @@
-/*
-Write a C++ program to implement a stack data structure using a singly linked
-list to store integer numbers
-
-with the following operations:
-push(),  pop(),  peek(),  isEmpty(),  return the size. and display from top to
-bottom.
-*/
-
 #include "ex2.h"
 #include <iostream>
 

@@ -3,43 +3,57 @@
 
 #include <iostream>
 
-// Node structure for the character stack
 struct Element {
-    char data;
-    Element* next;
+  char data;
+  Element *next;
 };
 
-// Stack implementation to track LIFO operations on sequence:
-// E A S * Y * Q U E * * * S T * * * I O * N * * ***
 class LIFOStack {
 private:
-    Element* topNode;
+  Element *topNode;
 
 public:
-    LIFOStack() {
-        // TODO: Initialize topNode to nullptr
-    }
+  LIFOStack() {
 
-    ~LIFOStack() {
-        // TODO: Pop all elements to free memory
-    }
+    topNode = nullptr;
+  }
 
-    // Push a character
-    void push(char value) {
-        // TODO: Implement push
-    }
+  ~LIFOStack() {
 
-    // Pop and return character
-    char pop() {
-        // TODO: Implement pop, print the popped character (or return it to be printed)
-        return '\0';
+    while (topNode) {
+      Element *temp = topNode;
+      topNode = topNode->next;
+      delete temp;
     }
+  }
 
-    // Check if the stack is empty
-    bool isEmpty() {
-        // TODO: Return if empty
-        return true;
+  void push(char value) {
+
+    Element *node = new Element;
+    node->data = value;
+    node->next = topNode;
+    topNode = node;
+  }
+
+  char pop() {
+
+    if (isEmpty()) {
+      std::cout << "Stack is Empty!\n";
+      return '\0';
+    } else {
+      Element *temp = topNode;
+      char data = temp->data;
+      topNode = topNode->next;
+      delete temp;
+
+      return data;
     }
+  }
+
+  bool isEmpty() {
+
+    return !topNode;
+  }
 };
 
-#endif // EX5_H
+#endif

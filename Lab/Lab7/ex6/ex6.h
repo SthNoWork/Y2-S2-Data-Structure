@@ -4,64 +4,85 @@
 #include <iostream>
 #include <string>
 
-// Node structure for the delimiter character stack
 struct Element {
-    char data;
-    Element* next;
+  char data;
+  Element *next;
 };
 
-// Stack to check if brackets/delimiters are balanced
 class DelimiterStack {
 private:
-    Element* topNode;
+  Element *topNode;
 
 public:
-    DelimiterStack() {
-        // TODO: Initialize topNode to nullptr
-    }
+  DelimiterStack() {
 
-    ~DelimiterStack() {
-        // TODO: Pop all elements to free memory
-    }
+    topNode = nullptr;
+  }
 
-    // Push left delimiter
-    void push(char delimiter) {
-        // TODO: Implement push
-    }
+  ~DelimiterStack() {
 
-    // Pop left delimiter
-    char pop() {
-        // TODO: Implement pop and return character
-        return '\0';
+    while (topNode) {
+      Element *temp = topNode;
+      topNode = topNode->next;
+      delete temp;
     }
+  }
 
-    // Check if empty
-    bool isEmpty() {
-        // TODO: Return if empty
-        return true;
+  void push(char delimiter) {
+
+    Element *node = new Element;
+    node->data = delimiter;
+    node->next = topNode;
+    topNode = node;
+  }
+
+  char pop() {
+
+    if (isEmpty()) {
+      std::cout << "Stack is Empty!\n";
+      return '\0';
+    } else {
+      Element *temp = topNode;
+      char data = temp->data;
+      topNode = topNode->next;
+      delete temp;
+
+      return data;
     }
+  }
+
+  bool isEmpty() {
+
+    return !topNode;
+  }
 };
 
-// Function template to check if delimiters match
-// e.g. matching '(' with ')', '[' with ']', '{' with '}'
 inline bool isMatchingPair(char character1, char character2) {
-    if (character1 == '(' && character2 == ')')
-        return true;
-    else if (character1 == '{' && character2 == '}')
-        return true;
-    else if (character1 == '[' && character2 == ']')
-        return true;
-    return false;
+  if (character1 == '(' && character2 == ')')
+    return true;
+  else if (character1 == '{' && character2 == '}')
+    return true;
+  else if (character1 == '[' && character2 == ']')
+    return true;
+  return false;
 }
 
-// Function template to check if delimiters are balanced
 inline bool areDelimitersBalanced(std::string expr) {
-    DelimiterStack s;
-    // TODO: Loop through string:
-    // 1. If left delimiter, push to s.
-    // 2. If right delimiter, pop and check if matches.
-    // 3. Return true if balanced, false otherwise.
-    return false;
+  DelimiterStack s;
+  for (char x : expr) {
+    if (x == '(' || x == '{' || x == '[') {
+      s.push(x);
+    } else if (x == ')' || x == '}' || x == ']') {
+      if (s.isEmpty()) {
+        return false;
+      }
+      char open = s.pop();
+      if (!isMatchingPair(open, x)) {
+        return false;
+      }
+    }
+  }
+  return s.isEmpty();
 }
 
-#endif // EX6_H
+#endif

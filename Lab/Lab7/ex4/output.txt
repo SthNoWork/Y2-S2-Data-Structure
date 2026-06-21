@@ -1,0 +1,4 @@
+Enter Integer: 10
+
+=== Stack ===
+1010

@@ -1,0 +1,12 @@
+Enter String: (())()[}
+Not balanced!
+
+=== CUT ===
+
+Enter String: ()(){}[]
+Balanced!
+
+=== CUT ===
+
+Enter String: (())()
+Balanced!

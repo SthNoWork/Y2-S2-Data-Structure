@@ -3,47 +3,69 @@
 
 #include <iostream>
 
-// Node structure for integer stack (to store binary digits)
 struct Element {
-    int data;
-    Element* next;
+  int data;
+  Element *next;
 };
 
 class BinaryStack {
 private:
-    Element* topNode;
+  Element *topNode;
 
 public:
-    BinaryStack() {
-        // TODO: Initialize topNode to nullptr
-    }
+  BinaryStack() {
 
-    ~BinaryStack() {
-        // TODO: Pop all elements to prevent memory leaks
-    }
+    topNode = nullptr;
+  }
 
-    // Push binary digit (0 or 1) onto the stack
-    void push(int bit) {
-        // TODO: Implement push
-    }
+  ~BinaryStack() {
 
-    // Pop from stack
-    int pop() {
-        // TODO: Implement pop and return the popped bit
-        return -1;
+    while (topNode) {
+      Element *temp = topNode;
+      topNode = topNode->next;
+      delete temp;
     }
+  }
 
-    // Check if the stack is empty
-    bool isEmpty() {
-        // TODO: Return true if stack is empty, otherwise false
-        return true;
-    }
+  void push(int bit) {
 
-    // Display the binary bits stored in the stack from top to bottom
-    // (This prints the binary representation of the decimal number)
-    void display() {
-        // TODO: Print the contents of the stack from top to bottom
+    Element *node = new Element;
+    node->data = bit;
+    node->next = topNode;
+    topNode = node;
+  }
+
+  int pop() {
+
+    if (isEmpty()) {
+      std::cout << "Stack is Empty!\n";
+      return -1;
+    } else {
+      Element *temp = topNode;
+      char data = temp->data;
+      topNode = topNode->next;
+      delete temp;
+
+      return data;
     }
+  }
+
+  bool isEmpty() {
+
+    return !topNode;
+  }
+
+  void display() {
+
+    Element *node = topNode;
+    int i = 0;
+    std::cout << "\n=== Stack ===\n";
+    while (node) {
+      std::cout << node->data;
+      node = node->next;
+    }
+    std::cout << std::endl;
+  }
 };
 
-#endif // EX4_H
+#endif

@@ -1,11 +1,28 @@
-#include <iostream>
 #include "ex5.h"
+#include <iostream>
 
 using namespace std;
 
 int main() {
-    // TODO: Process the LIFO sequence: E A S * Y * Q U E * * * S T * * * I O * N * * ***
-    // Print the sequence of values returned by pop operations (when '*' is encountered)
-    
-    return 0;
+
+  LIFOStack *stack = new LIFOStack;
+  string input;
+  cout << "Enter String: ";
+  getline(std::cin, input);
+
+  for (char x : input) {
+    if (x == ' ') {
+      continue;
+    }
+    if (x == '*') {
+      std::cout << "Popped: " << stack->pop() << std::endl;
+    } else {
+      std::cout << "Pushed: " << x << std::endl;
+      stack->push(x);
+    }
+  }
+  std::cout << std::endl;
+
+  delete stack;
+  return 0;
 }

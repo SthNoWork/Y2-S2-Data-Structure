@@ -1,0 +1,25 @@
+Enter String: E A S * Y * Q U E * * * S T * * * I O * N * * *
+Pushed: E
+Pushed: A
+Pushed: S
+Popped: S
+Pushed: Y
+Popped: Y
+Pushed: Q
+Pushed: U
+Pushed: E
+Popped: E
+Popped: U
+Popped: Q
+Pushed: S
+Pushed: T
+Popped: T
+Popped: S
+Popped: A
+Pushed: I
+Pushed: O
+Popped: O
+Pushed: N
+Popped: N
+Popped: I
+Popped: E

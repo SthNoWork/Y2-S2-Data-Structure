@@ -4,8 +4,7 @@
 using namespace std;
 
 int main() {
-  // TODO: Create a Stack object
-  // TODO: Test push(), pop(), peek(), isEmpty(), isFull(), displayStack()
+
   Stack stack(5);
 
   stack.push(2);

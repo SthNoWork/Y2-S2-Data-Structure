@@ -3,47 +3,71 @@
 
 #include <iostream>
 
-// Node structure for the character stack
 struct Element {
-    char data;
-    Element* next;
+  char data;
+  Element *next;
 };
 
-// Class template for a linked list-based Character Stack
-class CharStack {
+class Stack {
 private:
-    Element* topNode;
+  Element *topNode;
 
 public:
-    CharStack() {
-        // TODO: Initialize topNode to nullptr
+  Stack() {
+
+    topNode = nullptr;
+  }
+
+  ~Stack() {
+
+    while (topNode) {
+      Element *temp = topNode;
+      topNode = topNode->next;
+      delete temp;
+    }
+  }
+
+  void push(char value) {
+
+    Element *node = new Element;
+    node->data = value;
+    node->next = topNode;
+    topNode = node;
+  }
+
+  char pop() {
+
+    if (isEmpty()) {
+      std::cout << "Stack is Empty!\n";
+      return -1;
+    } else {
+      Element *temp = topNode;
+      char data = temp->data;
+      topNode = topNode->next;
+      delete temp;
+
+      return data;
     }
 
-    ~CharStack() {
-        // TODO: Pop all elements to prevent memory leaks
-    }
+    return '\0';
+  }
 
-    // Push a character onto the stack
-    void push(char value) {
-        // TODO: Push character onto the stack
-    }
+  bool isEmpty() {
 
-    // Pop a character from the stack
-    char pop() {
-        // TODO: Pop character from the stack and return it
-        return '\0'; // Placeholder
-    }
+    return !topNode;
+  }
 
-    // Check if the stack is empty
-    bool isEmpty() {
-        // TODO: Return true if stack is empty, otherwise false
-        return true; // Placeholder
-    }
+  void display() {
 
-    // Display stack elements (from top to bottom)
-    void display() {
-        // TODO: Print all elements in stack
+    Element *node = topNode;
+    int i = 0;
+    std::cout << "\n=== Stack ===\n";
+    while (node) {
+      std::cout << node->data;
+      node = node->next;
     }
+    std::cout << std::endl;
+  }
 };
 
-#endif // EX3_H
+#endif

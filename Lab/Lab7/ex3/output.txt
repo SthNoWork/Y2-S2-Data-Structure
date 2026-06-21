@@ -1,0 +1,4 @@
+Enter String: CatsEverywhere
+
+=== Stack ===
+erehwyrevEsta
